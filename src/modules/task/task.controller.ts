@@ -15,7 +15,7 @@ export class TasksController {
 
   @Get('/:id')
   getTask(@Param('id') id: string) {
-    return this.taskService.getTask(id);
+    return this.taskService.getTask(parseInt(id));
   }
   @Post('/')
   createTask(@Body() body: any) {
@@ -24,16 +24,16 @@ export class TasksController {
 
   @Patch('/:id/done')
   markTaskAsDone(@Body() body: any, @Param('id') id: string) {
-    return this.taskService.updateTask(id, body);
+    return this.taskService.updateTask(parseInt(id), body);
   }
 
   @Patch('/:id/pending')
   markTaskAsPending(@Body() body: any, @Param('id') id: string) {
-    return this.taskService.updateTask(id, body);
+    return this.taskService.updateTask(parseInt(id), body);
   }
 
   @Delete('/:id')
   deleteTask(@Param('id') id: string) {
-    return this.taskService.deleteTask(id);
+    return this.taskService.deleteTask(parseInt(id));
   }
 }
