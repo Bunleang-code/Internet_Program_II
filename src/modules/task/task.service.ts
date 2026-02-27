@@ -10,25 +10,27 @@ export class TaskService {
     private tasksRepo: Repository<Task>,
   ) {}
 
-  getTask(id: number) {
-    return this.tasksRepo.findOne({
-      where: { id },
-      relations: ['user'],
+  createTask(taskData: Partial<Task>) {
+  const task = this.tasksRepo.create(taskData);
+  return this.tasksRepo.save(task);
+  }
+
+  findAllTasks(){
+    return this.tasksRepo.find({ relations: ['user'] });
+  }
+
+  findOneTask(id: number) {
+    return this.tasksRepo.findOne({ where: { id }, relations: ['user'],
     });
   }
 
-  createTask(body: Partial<Task>) {
-    const task = this.tasksRepo.create(body);
-    return this.tasksRepo.save(task);
+  async updateTask(id: number, taskData: Partial<Task>) {
+    await this.tasksRepo.update(id, taskData);
+    return this.findOneTask(id);
   }
 
-  async updateTask(id: number, body: Partial<Task>) {
-    await this.tasksRepo.update(id, body);
-    return this.getTask(id);
-  }
-
-  async deleteTask(id: number) {
-    await this.tasksRepo.delete(id);
+  removeTask(id: number) {
+    this.tasksRepo.delete(id);
     return { message: 'success' };
   }
 }

@@ -10,24 +10,26 @@ export class UsersService {
     private usersRepo: Repository<User>,
   ) {}
 
-  createUser(body: Partial<User>) {
-    const user = this.usersRepo.create(body);
+  createUser(userData: Partial<User>) {
+    const user = this.usersRepo.create(userData);
     return this.usersRepo.save(user);
   }
 
-  getUser(username: string) {
-    return this.usersRepo.findOne({ 
-      where: { username },
-      relations: ['tasks'],
-    });
+  findAllUsers() {
+    return this.usersRepo.find({ relations: ['tasks'] });
   }
 
-  async updateUser(username: string, email: string, password: string, body: Partial<User>) {
-    await this.usersRepo.update({ username }, body);
-    return this.getUser(username);
+  findOneUser(id: number) {
+    return this.usersRepo.findOne({ where: {id}, relations: ['tasks']});
   }
 
-  deleteUser(username: string) {
-    return this.usersRepo.delete({ username });
+  async updateUser(id: number, updateData: Partial<User>) {
+    await this.usersRepo.update( id , updateData);
+    return this.findOneUser(id);
+  }
+
+  removeUser(id: number) {
+    this.usersRepo.delete( id );
+    return { message: 'success'};
   }
 }
