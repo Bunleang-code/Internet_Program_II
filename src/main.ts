@@ -10,6 +10,13 @@ async function bootstrap() {
       transform: true,
     }),
   );
+
+  app.enableCors({
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+    allowedHeaders: ['Content-Type'],
+  });
+
   await app.listen(process.env.PORT ?? 3100);
 }
 bootstrap();
