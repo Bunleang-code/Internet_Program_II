@@ -17,7 +17,7 @@ export class UsersService {
 
   findAllUsers() {
     return this.usersRepo.find({ relations: ['tasks'] });
-  }
+  } 
 
   findOneUser(id: number) {
     return this.usersRepo.findOne({ where: {id}, relations: ['tasks']});

@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './user.service';
 import { createUserDto } from './dto/create-user.dto';
-
+ 
 @Controller('users')
 export class UsersController {
   constructor(private readonly userService: UsersService) {}

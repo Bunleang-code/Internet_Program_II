@@ -22,7 +22,7 @@ export class TasksController {
   getOneTask(@Param('id') id: number) {
     return this.taskService.findOneTask(id);
   }
-  
+   
   @Post('/')
   createTask(@Body() body: any) {
     return this.taskService.createTask(body);
