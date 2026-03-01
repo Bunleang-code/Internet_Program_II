@@ -28,9 +28,14 @@ export const useTodoStore = defineStore("todo", {
       }
     },
     async addTodo(todo) {
+
+      const trimmed = todo.trim();
+
+      if(!trimmed) return;
+
       try {
         const response = await axios.post('http://localhost:3100/tasks', {
-          name: todo,
+          name: trimmed,
           description: "description",
         });
         this.todos.push(response.data); // use the real data returned from DB
