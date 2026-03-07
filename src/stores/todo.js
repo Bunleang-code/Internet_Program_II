@@ -17,13 +17,20 @@ export const useTodoStore = defineStore("todo", {
         console.error('Failed to fetch todos:', error);
       }
     },
-    toggleStatus(id) {
+    async toggleStatus(id) {
       const foundIndex = this.todos.findIndex((t) => t.id == id);
       if (foundIndex >= 0) {
-        if (this.todos[foundIndex].completedAt != null) {
-          this.todos[foundIndex].completedAt = null;
-        } else {
-          this.todos[foundIndex].completedAt = new Date().toISOString();
+        const todo = this.todos[foundIndex];
+        const newCompletedAt = todo.completedAt != null ? null : new Date().toISOString();
+        
+        try {
+          const response = await axios.patch(`http://localhost:3100/tasks/${id}`, {
+            completedAt: newCompletedAt,
+          });
+          this.todos[foundIndex] = response.data; // Update with server response
+        } catch (error) {
+          console.error('Failed to update todo status:', error);
+          // Optionally revert local change if update fails
         }
       }
     },
