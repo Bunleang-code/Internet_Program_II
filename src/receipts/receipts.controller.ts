@@ -1,7 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { CreateReceiptDto } from "./dto/create-receipt.dto";
 import { UpdateReceiptDto } from "./dto/update-receipt.dto";
 import { ReceiptsService } from "./receipts.service";
+import { ApikeyGuard } from "src/common/guards/api-key.guard";
+
+@UseGuards(ApikeyGuard)
 @Controller('receipts')
 export class ReceiptsController {
     constructor(private readonly receiptsService: ReceiptsService){}
