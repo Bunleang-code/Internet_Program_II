@@ -5,6 +5,7 @@ import { Receipt } from './database/entities/receipts.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ReceiptModule } from './receipts/receipts.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
@@ -23,6 +24,22 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         synchronize: true,
       }),
     }),
+
+    ClientsModule.registerAsync([
+      {
+        name: 'RABBITMQ_SERVICE',
+        imports: [ConfigModule],
+        inject: [ConfigService],
+        useFactory: (configService: ConfigService) => ({
+          transport: Transport.RMQ,
+          options: {
+            urls: [configService.get('RABBITMQ_URL')],
+            queue: 'receipts_queue',
+            queueOptions: { durable: true },
+          },
+        }),
+      },
+    ]),
 
     ReceiptModule,
   ],
