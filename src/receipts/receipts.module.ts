@@ -6,6 +6,8 @@ import { Receipt } from "src/database/entities/receipts.entity";
 import { ClientsModule, Transport } from "@nestjs/microservices";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { ApikeyGuard } from "src/common/guards/api-key.guard";
+import { NotificationsModule } from "src/notifications/notifications.module";
+import { LoggingInterceptor } from "src/common/interceptors/logging.interceptor";
 
 
 @Module({
@@ -26,9 +28,11 @@ import { ApikeyGuard } from "src/common/guards/api-key.guard";
                 },
             }),
         },
-    ]),  
-],
-    providers: [ReceiptsService,ApikeyGuard],
+        ]),  
+       
+        NotificationsModule,
+    ],
+    providers: [ReceiptsService],
     controllers: [ReceiptsController]
 })
 export class ReceiptModule {}

@@ -5,12 +5,15 @@ import { Receipt } from 'src/database/entities/receipts.entity';
 import { CreateReceiptDto } from './dto/create-receipt.dto';
 import { UpdateReceiptDto } from './dto/update-receipt.dto';
 import { ClientProxy } from '@nestjs/microservices';
+import { NotificationsService } from 'src/notifications/notifications.service';
 
 @Injectable()
 export class ReceiptsService {
   constructor(
     @InjectRepository(Receipt)
     private readonly receiptRepo: Repository<Receipt>,
+
+    private readonly notifications: NotificationsService, 
 
     @Inject('RABBITMQ_SERVICE')
     private readonly rabbitClient: ClientProxy,
@@ -34,10 +37,17 @@ export class ReceiptsService {
     });
     const saved = await this.receiptRepo.save(receipt);
 
+    // Microservices
     this.rabbitClient.emit('receipt.created', {
       event: 'receipt.created',
       timestamp: new Date(),
       data: saved,
+    });
+
+    //Notification
+    this.notifications.notify('receipt is created...', {
+      receiptId: saved.id,
+      price: saved.price,
     });
 
     return saved;
@@ -51,12 +61,19 @@ export class ReceiptsService {
     if (dto.price !== undefined) receipt.price = dto.price;
 
     const updated = await this.receiptRepo.save(receipt);
-
+    
+    //Microservice
     this.rabbitClient.emit('receipt.updated', {
       event: 'receipt.updated',
       timestamp: new Date(),
       data: updated,
     });
+
+    //Notifications
+    this.notifications.notify('receipt is updated... ', {
+      receiptId: updated.id,
+      price: updated.price,
+    })
 
     return updated;
   }
@@ -68,7 +85,14 @@ export class ReceiptsService {
     this.rabbitClient.emit('receipt.deleted', {
       event: 'receipt.deleted',
       timestamp: new Date(),
-      data: {id},
+      data: { id },
+    });
+
+    // Notifications
+    this.notifications.notify('receipt is deleted...', {
+      receiptId: receipt.id,
+      name: receipt.name,
+      price: receipt.price,
     });
 
     return { deleted: true, id };
