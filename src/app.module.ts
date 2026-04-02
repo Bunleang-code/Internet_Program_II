@@ -7,6 +7,8 @@ import { ReceiptModule } from './receipts/receipts.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { NotificationsModule } from './notifications/notifications.module';
+import { OrdersService } from './orders/orders.service';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
@@ -26,25 +28,11 @@ import { NotificationsModule } from './notifications/notifications.module';
       }),
     }),
 
-    ClientsModule.registerAsync([ //   async = waits for ConfigService to load .env first
-      {
-        name: 'RABBITMQ_SERVICE',
-        imports: [ConfigModule], //  make ConfigModule available inside useFactory
-        inject: [ConfigService], //  inject ConfigService into useFactory function
-        useFactory: (configService: ConfigService) => ({ //  receives ConfigService as argument
-          transport: Transport.RMQ,   //  use RabbitMQ transport protocol
-          options: {
-            urls: [configService.get('RABBITMQ_URL')],
-            queue: 'receipts_queue',
-            queueOptions: { durable: true },     //  queue survives RabbitMQ restart
-          },
-        }),
-      },
-    ]),
-
     ReceiptModule,
 
     NotificationsModule,
+
+    OrdersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
