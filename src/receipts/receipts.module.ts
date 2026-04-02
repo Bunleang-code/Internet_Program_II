@@ -5,6 +5,7 @@ import { ReceiptsService } from "./receipts.service";
 import { Receipt } from "src/database/entities/receipts.entity";
 import { ClientsModule, Transport } from "@nestjs/microservices";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { ApikeyGuard } from "src/common/guards/api-key.guard";
 
 
 @Module({
@@ -25,9 +26,9 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
                 },
             }),
         },
-    ]), 
+    ]),  
 ],
-    providers: [ReceiptsService],
+    providers: [ReceiptsService,ApikeyGuard],
     controllers: [ReceiptsController]
 })
 export class ReceiptModule {}

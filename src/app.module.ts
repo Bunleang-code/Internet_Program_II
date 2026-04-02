@@ -25,17 +25,17 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
       }),
     }),
 
-    ClientsModule.registerAsync([
+    ClientsModule.registerAsync([ //   async = waits for ConfigService to load .env first
       {
         name: 'RABBITMQ_SERVICE',
-        imports: [ConfigModule],
-        inject: [ConfigService],
-        useFactory: (configService: ConfigService) => ({
-          transport: Transport.RMQ,
+        imports: [ConfigModule], //  make ConfigModule available inside useFactory
+        inject: [ConfigService], //  inject ConfigService into useFactory function
+        useFactory: (configService: ConfigService) => ({ //  receives ConfigService as argument
+          transport: Transport.RMQ,   //  use RabbitMQ transport protocol
           options: {
             urls: [configService.get('RABBITMQ_URL')],
             queue: 'receipts_queue',
-            queueOptions: { durable: true },
+            queueOptions: { durable: true },     //  queue survives RabbitMQ restart
           },
         }),
       },

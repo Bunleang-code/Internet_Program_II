@@ -5,8 +5,6 @@ import { Receipt } from 'src/database/entities/receipts.entity';
 import { CreateReceiptDto } from './dto/create-receipt.dto';
 import { UpdateReceiptDto } from './dto/update-receipt.dto';
 import { ClientProxy } from '@nestjs/microservices';
-import { timestamp } from 'rxjs';
-import { time } from 'console';
 
 @Injectable()
 export class ReceiptsService {
@@ -39,7 +37,7 @@ export class ReceiptsService {
     this.rabbitClient.emit('receipt.created', {
       event: 'receipt.created',
       timestamp: new Date(),
-      date: saved,
+      data: saved,
     });
 
     return saved;

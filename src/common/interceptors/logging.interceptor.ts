@@ -13,7 +13,6 @@ export class LoggingInterceptor implements NestInterceptor {
                 const ms = Date.now() - start;
                 console.log(`[HTTP] ${method} ${url} - ${ms}ms`);
             })
-        )
-        
+        ) 
     }
 }

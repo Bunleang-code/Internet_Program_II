@@ -13,7 +13,7 @@ async function bootstrap() {
       transform: true
     }),
   );
-  app.useGlobalInterceptors(new LoggingInterceptor());
+  // app.useGlobalInterceptors(new LoggingInterceptor());
   await app.listen(process.env.PORT ?? 3000);
   
 }
