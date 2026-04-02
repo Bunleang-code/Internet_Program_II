@@ -24,7 +24,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
                 
         ]),
         
-        forwardRef(() => NotificationsModule),
+        // forwardRef(() => NotificationsModule),
+        NotificationsModule
     ],
     controllers: [OrdersController],
     providers: [OrdersService],

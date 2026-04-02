@@ -7,7 +7,7 @@ export class OrdersService {
     constructor(
         @Inject('ORDERS_SERVICE')
         private readonly client: ClientProxy,
-        @Inject(forwardRef(() => NotificationsService))
+        // @Inject(forwardRef(() => NotificationsService))
         private readonly notifications: NotificationsService,
     ){}
 

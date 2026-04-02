@@ -9,6 +9,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { NotificationsModule } from './notifications/notifications.module';
 import { OrdersService } from './orders/orders.service';
 import { OrdersModule } from './orders/orders.module';
+import { CoreModule } from './core/core.module';
 
 @Module({
   imports: [
@@ -33,6 +34,8 @@ import { OrdersModule } from './orders/orders.module';
     NotificationsModule,
 
     OrdersModule,
+
+    CoreModule,
   ],
   controllers: [AppController],
   providers: [AppService],
