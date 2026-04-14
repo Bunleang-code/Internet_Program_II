@@ -1,6 +1,5 @@
 
 services:
-
   postgres:
     image: postgres:16-alpine
     container_name: nest_postgres
@@ -47,6 +46,9 @@ services:
       - '3000:3000'
     env_file:
       - .env
+    volumes:
+      - .:/app        # <--- mount local code
+      - /app/node_modules  # <--- keep container node_modules
     depends_on:
       postgres:
         condition: service_healthy

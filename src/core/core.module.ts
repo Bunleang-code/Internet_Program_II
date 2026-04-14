@@ -4,7 +4,7 @@ import { EVENT_PUBLISHER } from './tokens';
 @Module({
   providers: [
     {
-      provide: EVENT_PUBLISHER,
+      provide: 'll',
       useValue: {
         publish: (event: string, payload: any) => {
           console.log(`[CORE EVENT] ${event}`, payload);
@@ -14,6 +14,6 @@ import { EVENT_PUBLISHER } from './tokens';
       },
     },
   ],
-  exports: [EVENT_PUBLISHER],
+  exports: ['ll'],
 })
 export class CoreModule {}

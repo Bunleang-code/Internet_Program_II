@@ -5,11 +5,16 @@ import { Receipt } from './database/entities/receipts.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ReceiptModule } from './receipts/receipts.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { ClientsModule, Transport } from '@nestjs/microservices';
 import { NotificationsModule } from './notifications/notifications.module';
-import { OrdersService } from './orders/orders.service';
 import { OrdersModule } from './orders/orders.module';
 import { CoreModule } from './core/core.module';
+import { CategoriesModule } from './categories/categories.module';
+import { ProductsModule } from './products/products.module';
+import { Category } from './database/entities/categories.entity';
+import { Product } from './database/entities/products.entity';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -24,9 +29,19 @@ import { CoreModule } from './core/core.module';
         username: config.get('DB_USERNAME'),
         password: config.get('DB_PASSWORD'),
         database: config.get('DB_NAME'),
-        entities: [Receipt],
+        entities: [Receipt, Category, Product],
         synchronize: true,
       }),
+    }),
+
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+
+      // ✅ We will switch between schema-first and code-first later
+      typePaths: [join(process.cwd(), 'src/graphql/schema/*.graphql')], // schema-first
+      // autoSchemaFile: join(process.cwd(), 'src/graphql/schema.gql'), // code-first (later)
+
+      // playground: true,
     }),
 
     ReceiptModule,
@@ -36,6 +51,10 @@ import { CoreModule } from './core/core.module';
     OrdersModule,
 
     CoreModule,
+
+    CategoriesModule,
+
+    ProductsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

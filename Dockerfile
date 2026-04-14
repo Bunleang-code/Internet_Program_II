@@ -1,17 +1,19 @@
-FROM node:20-alpine AS builder
-
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npm run build
-
+# Use Node image
 FROM node:20-alpine
 
+# Set working directory
 WORKDIR /app
-COPY package*.json ./
-RUN npm install --only=production
-COPY --from=builder /app/dist ./dist
 
+# Copy only package files to install deps
+COPY package*.json ./
+
+# Install all dependencies (dev + prod)
+RUN npm install
+
+# Mount your code via Docker Compose, so no need to copy
+
+# Expose port
 EXPOSE 3000
-CMD ["node", "dist/main"]
+
+# Run NestJS in watch mode
+CMD ["npm", "run", "start:dev"]
