@@ -7,6 +7,7 @@ import { Category } from 'src/database/entities/categories.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Category])],
   providers: [CategoriesService],
-  controllers: [CategoriesController]
+  controllers: [CategoriesController],
+  exports: [CategoriesService]
 })
 export class CategoriesModule {}

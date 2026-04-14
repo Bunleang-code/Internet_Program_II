@@ -15,6 +15,7 @@ import { Product } from './database/entities/products.entity';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
+import { GraphqlModule } from './graphql/graphql.module';
 
 @Module({
   imports: [
@@ -55,6 +56,8 @@ import { join } from 'path';
     CategoriesModule,
 
     ProductsModule,
+
+    GraphqlModule,
   ],
   controllers: [AppController],
   providers: [AppService],
