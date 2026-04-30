@@ -39,8 +39,8 @@ import { GraphqlModule } from './graphql/graphql.module';
       driver: ApolloDriver,
 
       // ✅ We will switch between schema-first and code-first later
-      typePaths: [join(process.cwd(), 'src/graphql/schema/*.graphql')], // schema-first
-      // autoSchemaFile: join(process.cwd(), 'src/graphql/schema.gql'), // code-first (later)
+      // typePaths: [join(process.cwd(), 'src/graphql/schema/*.graphql')], // schema-first
+      autoSchemaFile: join(process.cwd(), 'src/graphql/schema.gql'), // code-first (later)
 
       // playground: true,
     }),
