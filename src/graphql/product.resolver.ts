@@ -36,7 +36,7 @@ export class ProductResolver {
     });
   }
 
-  // ✅ relation: Product.category
+  //relation: Product.category
   @ResolveField('category')
   async category(@Parent() product: any) {
     return await this.categoryService.findOne(product.categoryId);

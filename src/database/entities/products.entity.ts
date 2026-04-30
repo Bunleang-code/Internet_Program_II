@@ -18,20 +18,20 @@ export class Product {
     price: number;
 
     @Column({default: 0})
-    stock: number;
+    stock!: number;
 
     @Column({nullable: true})
-    image: string;
+    image!: string;
 
     @Column({ unique: true })
-    slug: string;
+    slug!: string;
 
     @ManyToOne(() => Category, (category) => category.products)
-    category: Category;
+    category!: Category;
 
     @CreateDateColumn()
-    createdAt: Date;
+    createdAt!: Date;
 
     @UpdateDateColumn()
-    updatedAt: Date;
+    updatedAt!: Date;
 }

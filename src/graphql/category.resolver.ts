@@ -1,11 +1,11 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { CategoriesService } from 'src/categories/categories.service';
 
-@Resolver('Category') // <-- matches schema type name
+@Resolver('Category') // matches schema type name
 export class CategoryResolver {
   constructor(private readonly categoryService: CategoriesService) {}
 
-  @Query('categories') // <-- matches schema query name
+  @Query('categories') // matches schema query name
   categories() {
     return this.categoryService.findAll(); // you already have (or students implement)
   }
