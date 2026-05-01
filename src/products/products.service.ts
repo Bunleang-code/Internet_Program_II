@@ -48,4 +48,11 @@ export class ProductsService {
         const product = await this.findOne(id);
         return await this.prodRepo.remove(product);
     }
+
+    async findByCategory(categoryId: number): Promise<Product[]> {
+        return this.prodRepo.find({
+            where: { category: { id: categoryId } },
+            relations: ['category'],
+        });
+    }
 }

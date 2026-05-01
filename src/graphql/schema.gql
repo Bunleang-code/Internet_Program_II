@@ -17,6 +17,7 @@ type ProductType {
 
 type Query {
   categories: [CategoryType!]!
+  productsByCategory(categoryId: Float!): [ProductType!]!
   products: [ProductType!]!
   product(id: Float!): ProductType
 }
