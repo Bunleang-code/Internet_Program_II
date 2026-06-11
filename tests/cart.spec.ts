@@ -40,3 +40,28 @@ test('remove item from cart', async ({ page }) => {
   await page.getByRole('button', { name: /remove/i }).click();
   await expect(page.locator('.shopping_cart_badge')).toHaveCount(0);
 });
+
+// ===Challenge 2: Sort Products by Price Low to High ===
+test('products sort by price low to high', async ({ page }) => {
+  await page.goto('https://www.saucedemo.com/');
+
+  await page.getByPlaceholder('Username').fill('standard_user');
+  await page.getByPlaceholder('Password').fill('secret_sauce');
+  await page.getByRole('button', { name: /login/i }).click();
+
+  // Select "Price (low to high)"
+  await page.locator('[data-test="product-sort-container"]')
+    .selectOption('lohi');
+
+  // Get all product prices
+  const prices = await page.locator('.inventory_item_price')
+    .allTextContents();
+
+  // Convert "$7.99" -> 7.99
+  const numericPrices = prices.map(price =>
+    parseFloat(price.replace('$', ''))
+  );
+
+  // Verify first item is the lowest price
+  expect(numericPrices[0]).toBe(Math.min(...numericPrices));
+});
